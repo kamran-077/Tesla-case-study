@@ -1,0 +1,47 @@
+*Tesla_Postgres Queries*
+
+Database name - tesla_db
+
+
+CREATE TABLE public.customers (
+    customer_id        VARCHAR(20) PRIMARY KEY,
+    customer_name      VARCHAR(100),
+    email              VARCHAR(100),
+    city               VARCHAR(100),
+    state_or_region    VARCHAR(100),
+    country            VARCHAR(10),
+    signup_date        DATE,
+    membership_tier    VARCHAR(50),
+    email_missing      BOOLEAN
+);
+
+CREATE TABLE public.orders (
+    order_id           VARCHAR(20) PRIMARY KEY,
+    customer_id        VARCHAR(20) REFERENCES public.customers(customer_id),
+    order_date         DATE,
+    product_category   VARCHAR(100),
+    quantity           INT,
+    unit_price_usd     NUMERIC(10,2),
+    order_status       VARCHAR(50),
+    payment_method     VARCHAR(50)
+);
+
+CREATE TABLE public.revenue (
+    revenue_id         VARCHAR(20) PRIMARY KEY,
+    order_id           VARCHAR(20) REFERENCES public.orders(order_id),
+    payment_date       DATE,
+    amount_paid_usd    NUMERIC(10,2),
+    payment_status     VARCHAR(50),
+    refund_amount_usd  NUMERIC(10,2)
+);
+
+
+Copy commands: - 
+\COPY public.customers FROM 'C:/Users/vikas gour/Downloads/tesla_Case_Study/tesla_case_study/customers_cleaned.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',');
+
+\COPY public.orders FROM 'C:/Users/vikas gour/Downloads/tesla_Case_Study/tesla_case_study/orders_cleaned.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',');
+
+\COPY public.revenue FROM 'C:/Users/vikas gour/Downloads/tesla_Case_Study/tesla_case_study/revenue_cleaned.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',');
+
+
+
